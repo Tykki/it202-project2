@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+  <title>G Remover-Pro</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <meta name="description" content="A sample project app that queries the city of chicago to list and map out graffiti areas and their removal status">
+  <meta name="theme-color" content="#363636" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+   crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#home">G Remover-Pro</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#mapView">Map View</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#listView">Listed View</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#about">About App</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="btnAdd">Install Me?</a>
+      </li>
+    </ul>
+  </div>
+  </nav>
+<!-- End of Nav -->
+
+  <div class="content mt-5 container" id="home">
+    <section class="row mb-5">
+      <form id="searchForm" class="col-12">
+        <div class="text-center">
+          <h1 class="mb-4">Where to Look?</h1>
+          <div class="form-group row">
+              <label for="foodName" class="col-3 col-form-label">Status:</label>
+              <div class="col">
+                <select name="statusInp" class="form-control" id="statusInput">
+                  <option value=''>Any Status</option>
+                </select>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label for="foodType" class="col-3 col-form-label">Ward:</label>
+              <div class="col">
+              <input type="number" class="form-control" id="WardInput" placeholder="Ex: 44">
+              </div>
+          </div>
+          <div class="row">
+            <section class="col">
+              <button type="submit" id="searchBtn" class="btn btn-outline-success w-100">Search</button>
+            </section>
+          </div>
+        </div>
+      </form>
+    </section>
+    
+  </div>
+<!-- End of Search Banner -->
+
+  <div class="content mt-5 container mb-4" id="listView">
+    <h1 class="text-center mb-5">Listed Results
+      <hr>
+    </h1>
+    <section id="resultsList" class="text-center list-group list-group-flush mb-5">
+    </section>
+  </div>
+<!-- End of List Screen -->
+
+  <div class="content mt-5 container text-center" id="mapView">
+    <h1 class="mb-5">Mapped Results
+      <hr>
+    </h1>
+    <section class="mb-5" id="mappedContent">
+        <div id="map"></div>
+    </section>
+  </div>
+
+<!-- End of Map Screen -->
+
+<div class="content text-center mb-5" id="about">
+    <section class="jumbotron">
+      <div class="container">
+        <h1 class="">About Graffiti Remover Pro</h1>
+        <hr>
+        <h4>The App to change Chicago Graffiti Removal Forever!</h4>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card mb-3" id="aboutApp">
+        <div class="card-body">
+          <h5 class="card-title">Graffiti Remover Pro!</h5>
+          <h6 class="card-subtitle mb-2 text-muted">A IT202 Project at UIC</h6>
+          <p class="card-text">This App is a PWA that will query the first 1000 entries of the city of Chicago data source for graffiti removal by ward and/or by status. It will return the matched criteria and display the info via a list screen and also a google maps view. Even though the app is accessible offline, it is not possible to query the city of Chicago data source without being online.</p>
+        </div>
+      </div>
+
+      <div class="card" id="aboutDev">
+          <div class="card-body">
+            <h5 class="card-title">Tykki</h5>
+            <h6 class="card-subtitle mb-2 text-muted">A IT202 Student/Your Dev</h6>
+            <p class="card-text">I am a UIC student trying to better my craft, I  have been coding and creating sites for some years now and working on being as proficient as I can possibly be.</p>
+            <label class="card-text">Check out the code here: </label>
+            <a href="https://github.com/Tykki/it202-project2" target="_blank">@Tykki's Github Repo</a>
+          </div>
+        </div>
+
+    </section>
+  </div>
+
+  <!-- End of About Screen -->
+
+<footer id="footer" class="bottom-footer">
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Made by Tykki</a>
+  </nav>
+</footer>
+<!-- End of Footer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      
+  <script>
+      // register the service worker for offline use
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .then(function() { console.log("Service Worker Registered"); });
+      }
+  </script>
+    
+  <script src="app.js"></script>
+  <script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Chicago
+        let chicago = {lat: 41.8781, lng: -87.6298};
+        $('#searchForm').on('reset', () => {
+          let map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 12, center: chicago});
+          for ([i, loc] of window.mapData.entries()) {
+            let latlng = new google.maps.LatLng(loc.latitude, loc.longitude)
+            let infowindow = new google.maps.InfoWindow({
+              content: `<div class="form-group row">
+                        <label for="SRNMap" class="col col-form-label">Service Request #:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext" id="SRNMap" value="${loc.service_request_number}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="surfaceTypeMap" class="col col-form-label">Type of Surface:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext" id="surfaceTypeMap" value="${loc.what_type_of_surface_is_the_graffiti_on_}">
+                        </div>
+                    </div><div class="form-group row">
+                        <label for="locationMap" class="col col-form-label">Location:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext" id="locationMap" value="${loc.where_is_the_graffiti_located_}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dateCreatedMap" class="col col-form-label">Date Created:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext text-truncate" id="dateCreatedMap" value="${new Date(loc.creation_date)}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="statusMap" class="col col-form-label">Status:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext" id="statusMap" value="${loc.status}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="completionDateMap" class="col col-form-label">Completion Date:</label>
+                        <div class="col">
+                            <input type="text" readonly class="form-control-plaintext text-truncate" id="completionDateMap" value="${loc.completion_date ? new Date(loc.completion_date) : 'N/A'}">
+                        </div>
+                    </div>`
+            })
+            let marker = new google.maps.Marker({position: latlng, label: loc.completion_date ? 'C' : 'O', title: loc.street_address, map: map})
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
+          }
+        })
+        // The map, centered at Chicago
+        let map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 12, center: chicago});
+        // The marker, positioned at Chicago
+        // let marker = new google.maps.Marker({position: chicago, map: map});
+      }
+    </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSYO-eW9rwv0Bq-NcaFW7OJzQEzrUv2fc&callback=initMap">
+  </script>
+
+  </body>
+</html>
