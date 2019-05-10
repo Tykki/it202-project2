@@ -14,7 +14,7 @@
       }
     ],
     "prefer_related_applications": false,
-    "start_url": "/it202-project2//index.html",
+    "start_url": "/it202-project2/index.html",
     "background_color": "#363636",
     "display": "standalone",
     "scope": "/it202-project2/",
