@@ -1,7 +1,6 @@
 $(document).ready(function() {
     
     const stats = ['Open', 'Completed', 'Open - Dup', 'Completed - Dup']
-    window.test = 'suck ass'
     function hideScreens() {
         $(".content").hide();
         $('#navbarNav').collapse("hide")
